@@ -808,7 +808,7 @@
           syncStatusBadge.textContent = msg;
         }
 
-        aasync function syncToGoogleSheets(payload) {
+        async function syncToGoogleSheets(payload) {
           setSyncStatus("syncing", "Guardando en Drive...");
           try {
             const formData = new FormData();
