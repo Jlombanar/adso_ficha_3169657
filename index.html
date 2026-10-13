@@ -1,0 +1,1038 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ADSO 3169657 · Checklist Frontend Flutter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --sena-verde: #39a900;
+        --sena-naranja: #ff6b00;
+        --sena-azul: #0067ac;
+        --sena-morado: #7b2ff7;
+        --fondo: #f4f7f5;
+        --fondo-alt: #eef2ee;
+        --texto: #1c2b22;
+        --texto-dim: #5b6b61;
+        --tarjeta-bg: #0f2027;
+        --tarjeta-bg2: #1b3a2c;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--fondo);
+        color: var(--texto);
+        line-height: 1.6;
+      }
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: "Syne", sans-serif;
+      }
+      .topbar {
+        background: linear-gradient(90deg, var(--sena-verde), var(--sena-azul));
+        color: #fff;
+        padding: 14px 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+      }
+      .topbar .marca {
+        font-weight: 800;
+        font-size: 17px;
+        letter-spacing: 0.5px;
+      }
+      .topbar .marca span {
+        color: #ffe29a;
+      }
+      .topbar .ficha {
+        font-size: 13px;
+        opacity: 0.9;
+      }
+      .slide {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 60px 28px;
+      }
+      .portada {
+        background:
+          radial-gradient(
+            circle at 15% 20%,
+            rgba(255, 107, 0, 0.35),
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 85% 80%,
+            rgba(0, 103, 172, 0.4),
+            transparent 45%
+          ),
+          linear-gradient(135deg, #103a22, #0b2a3d 60%, #1b0f3d);
+        color: #fff;
+        text-align: center;
+        padding: 90px 30px;
+        border-radius: 0 0 40px 40px;
+      }
+      .portada .etiqueta {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 6px 18px;
+        border-radius: 30px;
+        font-size: 13px;
+        letter-spacing: 1px;
+        color: #fff;
+        text-decoration: none;
+      }
+      .pdf-actions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 22px;
+      }
+      .pdf-download {
+        display: inline-block;
+        padding: 6px 18px;
+        border-radius: 30px;
+        background: var(--sena-verde);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+      .portada h1 {
+        font-size: 42px;
+        margin-bottom: 14px;
+      }
+      .portada p.sub {
+        font-size: 17px;
+        opacity: 0.88;
+        max-width: 680px;
+        margin: 0 auto;
+      }
+      .portada .chips {
+        margin-top: 30px;
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .portada .chip {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        padding: 8px 16px;
+        border-radius: 10px;
+        font-size: 13px;
+      }
+      .sec-header {
+        margin-bottom: 28px;
+      }
+      .sec-tag {
+        display: inline-block;
+        background: var(--sena-verde);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: 20px;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
+      }
+      .sec-tag.naranja {
+        background: var(--sena-naranja);
+      }
+      .sec-tag.azul {
+        background: var(--sena-azul);
+      }
+      .sec-tag.morado {
+        background: var(--sena-morado);
+      }
+      .sec-titulo {
+        font-size: 28px;
+        margin-bottom: 8px;
+      }
+      .sec-intro {
+        color: var(--texto-dim);
+        font-size: 15.5px;
+        max-width: 760px;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 18px;
+      }
+      .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+      @media (max-width: 820px) {
+        .grid-2,
+        .grid-3,
+        .grid-4 {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .tarjeta {
+        background: linear-gradient(
+          160deg,
+          var(--tarjeta-bg),
+          var(--tarjeta-bg2)
+        );
+        color: #e8f0ea;
+        border-radius: 14px;
+        padding: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+      }
+      .tarjeta h4 {
+        color: #9be78a;
+        font-size: 15px;
+        margin-bottom: 8px;
+      }
+      .tarjeta p {
+        font-size: 13.8px;
+        color: #cfe0d4;
+      }
+      .tarjeta .num {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: var(--sena-naranja);
+        color: #fff;
+        font-weight: 700;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .explicacion {
+        background: #fff;
+        border-left: 5px solid var(--sena-verde);
+        border-radius: 10px;
+        padding: 18px 20px;
+        margin: 16px 0;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+      }
+      .explicacion.naranja {
+        border-left-color: var(--sena-naranja);
+      }
+      .explicacion.azul {
+        border-left-color: var(--sena-azul);
+      }
+      .explicacion.morado {
+        border-left-color: var(--sena-morado);
+      }
+      .explicacion h4 {
+        font-size: 15px;
+        margin-bottom: 6px;
+        color: var(--texto);
+      }
+      .explicacion p,
+      .explicacion li {
+        font-size: 14.3px;
+        color: #374a3e;
+      }
+
+      .alert {
+        background: #fff6e8;
+        border: 1px solid #ffdca3;
+        border-radius: 10px;
+        padding: 16px 18px;
+        margin: 16px 0;
+        font-size: 13.8px;
+        color: #6b4b06;
+      }
+
+      .bloque-codigo {
+        background: #0f1b14;
+        border-radius: 12px;
+        padding: 4px;
+        margin: 18px 0;
+      }
+      .linea-codigo {
+        background: #132a1d;
+        border-left: 4px solid var(--sena-verde);
+        border-radius: 8px;
+        padding: 14px 16px;
+        margin: 6px;
+        color: #dff2e4;
+      }
+      .codigo-texto {
+        font-family: "Courier New", monospace;
+        font-size: 13.3px;
+        line-height: 1.7;
+        white-space: pre-wrap;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0;
+        font-size: 13.8px;
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      table.comparativa th {
+        background: var(--sena-verde);
+        color: #fff;
+        padding: 10px 12px;
+        text-align: left;
+      }
+      table.comparativa td {
+        padding: 10px 12px;
+        border-bottom: 1px solid #e3ebe5;
+      }
+      table.comparativa tr:nth-child(even) {
+        background: #f7faf7;
+      }
+
+      body > :not(.adso-workspace) {
+        display: none !important;
+      }
+      .adso-workspace {
+        min-height: 100vh;
+        background:
+          radial-gradient(ellipse at 85% 0%, rgba(0, 103, 172, 0.09), transparent 35%),
+          var(--fondo);
+      }
+      .workspace-topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        padding: 14px max(24px, calc((100vw - 1080px) / 2));
+        background: #123b2a;
+        color: #fff;
+      }
+      .workspace-brand {
+        font-family: "Syne", sans-serif;
+        font-weight: 800;
+      }
+      .workspace-brand span {
+        color: #9be78a;
+      }
+      .workspace-id {
+        font-size: 13px;
+        color: #d5e9dc;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .sync-status {
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 700;
+        background: rgba(255, 255, 255, 0.15);
+        transition: all 0.3s ease;
+      }
+      .sync-status.syncing {
+        background: #ffb65c;
+        color: #402300;
+      }
+      .sync-status.saved {
+        background: #9be78a;
+        color: #0b3d1b;
+      }
+      .workspace-hero {
+        padding: 58px 24px 46px;
+        background: linear-gradient(115deg, #16452e, #07577b);
+        color: #fff;
+      }
+      .workspace-hero-inner,
+      .workspace-content {
+        width: min(100%, 1080px);
+        margin: 0 auto;
+      }
+      .workspace-kicker {
+        color: #c6f2ae;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      .workspace-hero h1 {
+        max-width: 800px;
+        margin: 10px 0;
+        font-size: clamp(30px, 5vw, 48px);
+        line-height: 1.12;
+      }
+      .workspace-hero p {
+        max-width: 760px;
+        color: #e0eee7;
+      }
+      .workspace-tabs {
+        display: flex;
+        gap: 24px;
+        padding: 0 max(24px, calc((100vw - 1080px) / 2));
+        background: #fff;
+        border-bottom: 1px solid #d8e2da;
+      }
+      .workspace-tab {
+        min-height: 54px;
+        border: 0;
+        border-bottom: 3px solid transparent;
+        background: transparent;
+        color: var(--texto-dim);
+        font: 700 14px "DM Sans", sans-serif;
+        cursor: pointer;
+      }
+      .workspace-tab[aria-pressed="true"] {
+        color: #0067ac;
+        border-bottom-color: #39a900;
+      }
+      .workspace-content {
+        padding: 34px 24px 60px;
+      }
+      .workspace-panel[hidden] {
+        display: none;
+      }
+      .workspace-section-title {
+        margin-bottom: 8px;
+        font-size: 26px;
+      }
+      .workspace-muted {
+        color: var(--texto-dim);
+      }
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin: 22px 0 32px;
+      }
+      .info-item {
+        padding: 18px;
+        border-top: 3px solid var(--sena-verde);
+        background: #fff;
+      }
+      .info-item span {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--texto-dim);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+      .checklist-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 18px 0;
+      }
+      .checklist-toolbar button {
+        min-height: 40px;
+        padding: 8px 12px;
+        border: 1px solid #b8c9bc;
+        border-radius: 4px;
+        background: #fff;
+        color: var(--texto);
+        font: 700 13px "DM Sans", sans-serif;
+        cursor: pointer;
+      }
+      .checklist-toolbar button:hover {
+        border-color: var(--sena-azul);
+      }
+      .evaluation-summary {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(120px, 1fr));
+        gap: 1px;
+        margin: 20px 0;
+        background: #d8e2da;
+        border: 1px solid #d8e2da;
+      }
+      .summary-item {
+        min-height: 78px;
+        padding: 12px;
+        background: #fff;
+      }
+      .summary-item strong {
+        display: block;
+        font-family: "Syne", sans-serif;
+        font-size: 22px;
+      }
+      .summary-item span {
+        color: var(--texto-dim);
+        font-size: 12px;
+      }
+      .criteria-guide {
+        margin: 18px 0;
+        border-block: 1px solid #d8e2da;
+        background: #fff;
+      }
+      .criteria-guide summary {
+        padding: 12px 14px;
+        color: #0067ac;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .criteria-guide ol {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px 24px;
+        padding: 0 20px 16px 38px;
+        color: #374a3e;
+        font-size: 13px;
+      }
+      .evaluation-wrap {
+        overflow: auto;
+        max-height: 72vh;
+        background: #fff;
+        border: 1px solid #d8e2da;
+      }
+      .evaluation-table {
+        width: max-content;
+        min-width: 100%;
+        margin: 0;
+        border-radius: 0;
+        font-size: 12px;
+      }
+      .evaluation-table th,
+      .evaluation-table td {
+        padding: 8px;
+        border-bottom: 1px solid #e1e8e2;
+        border-right: 1px solid #e1e8e2;
+        vertical-align: middle;
+      }
+      .evaluation-table thead th {
+        position: sticky;
+        top: 0;
+        z-index: 3;
+        min-width: 112px;
+        max-width: 140px;
+        background: #16452e;
+        color: #fff;
+        text-align: left;
+      }
+      .evaluation-table thead th:first-child {
+        min-width: 44px;
+        width: 44px;
+      }
+      .evaluation-table thead th:nth-child(2),
+      .evaluation-table td:nth-child(2) {
+        min-width: 190px;
+        max-width: 190px;
+      }
+      .evaluation-table thead th:nth-child(3),
+      .evaluation-table td:nth-child(3) {
+        min-width: 210px;
+        max-width: 210px;
+      }
+      .evaluation-table thead th:nth-child(2),
+      .evaluation-table thead th:nth-child(3) {
+        z-index: 4;
+      }
+      .evaluation-table td:first-child,
+      .evaluation-table td:nth-child(2),
+      .evaluation-table td:nth-child(3) {
+        position: sticky;
+        z-index: 1;
+        background: #fff;
+      }
+      .evaluation-table td:first-child {
+        left: 0;
+        text-align: center;
+      }
+      .evaluation-table td:nth-child(2) {
+        left: 44px;
+        font-weight: 700;
+      }
+      .evaluation-table td:nth-child(3) {
+        left: 234px;
+        color: var(--texto-dim);
+      }
+      .evaluation-table thead th:first-child {
+        left: 0;
+        z-index: 5;
+      }
+      .evaluation-table thead th:nth-child(2) {
+        position: sticky;
+        left: 44px;
+      }
+      .evaluation-table thead th:nth-child(3) {
+        position: sticky;
+        left: 234px;
+      }
+      .evaluation-table tbody tr:nth-child(even) td {
+        background: #f4f8f4;
+      }
+      .evaluation-table td:first-child,
+      .evaluation-table td:nth-child(2),
+      .evaluation-table td:nth-child(3) {
+        background: #fff;
+      }
+      .evaluation-table tbody tr:nth-child(even) td:first-child,
+      .evaluation-table tbody tr:nth-child(even) td:nth-child(2),
+      .evaluation-table tbody tr:nth-child(even) td:nth-child(3) {
+        background: #f4f8f4;
+      }
+      .evaluation-table input[type="checkbox"] {
+        display: block;
+        width: 20px;
+        height: 20px;
+        margin: 0 auto;
+        accent-color: var(--sena-verde);
+        cursor: pointer;
+      }
+      .evaluation-table input[type="checkbox"]:disabled {
+        cursor: not-allowed;
+        opacity: 0.35;
+      }
+      .evaluation-table textarea {
+        width: 190px;
+        min-height: 36px;
+        padding: 7px;
+        border: 1px solid #bac9be;
+        border-radius: 4px;
+        font: 12px "DM Sans", sans-serif;
+        resize: vertical;
+      }
+      .status-badge {
+        display: inline-block;
+        min-width: 104px;
+        padding: 5px 8px;
+        border-radius: 3px;
+        background: #edf1ee;
+        color: #44534a;
+        font-size: 11px;
+        font-weight: 700;
+        text-align: center;
+      }
+      .status-badge.complete {
+        background: #e8f6de;
+        color: #286c16;
+      }
+      .status-badge.reinforce {
+        background: #fff0ed;
+        color: #a52d21;
+      }
+      .status-badge.progress {
+        background: #fff5df;
+        color: #805300;
+      }
+      .workspace-footer {
+        padding: 20px 24px;
+        border-top: 1px solid #d8e2da;
+        color: var(--texto-dim);
+        font-size: 12px;
+        text-align: center;
+      }
+      @media (max-width: 700px) {
+        .workspace-topbar {
+          align-items: flex-start;
+          flex-direction: column;
+          padding-inline: 18px;
+        }
+        .workspace-hero {
+          padding: 40px 18px 34px;
+        }
+        .workspace-tabs {
+          gap: 18px;
+          padding-inline: 18px;
+        }
+        .workspace-content {
+          padding: 26px 18px 42px;
+        }
+        .info-grid {
+          grid-template-columns: 1fr;
+        }
+        .evaluation-summary {
+          grid-template-columns: repeat(2, minmax(120px, 1fr));
+        }
+        .criteria-guide ol {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="adso-workspace">
+      <div class="workspace-topbar">
+        <div class="workspace-brand">SENA · <span>ADSO</span></div>
+        <div class="workspace-id">
+          <span>Ficha 3169657 · Competencia de software</span>
+          <span id="sync-status" class="sync-status">Sincronizado con Drive</span>
+        </div>
+      </div>
+      <header class="workspace-hero">
+        <div class="workspace-hero-inner">
+          <div class="workspace-kicker">ADSO · Ficha 3169657</div>
+          <h1>Análisis y Desarrollo de Software</h1>
+          <p>
+            Ficha ADSO 3169657 · Competencia 220501096: desarrollar la solución
+            de software de acuerdo con el diseño y metodologías de desarrollo.
+          </p>
+        </div>
+      </header>
+      <nav class="workspace-tabs" aria-label="Secciones de la ficha">
+        <button class="workspace-tab" type="button" data-view="panel-ficha" aria-pressed="true">
+          Información ADSO
+        </button>
+        <button class="workspace-tab" type="button" data-view="panel-checklist" aria-pressed="false">
+          Checklist por aprendiz
+        </button>
+      </nav>
+      <div class="workspace-content">
+        <section class="workspace-panel" id="panel-ficha">
+          <h2 class="workspace-section-title">Datos de la formación</h2>
+          <p class="workspace-muted">Programa, ficha y competencia de formación.</p>
+          <div class="info-grid">
+            <div class="info-item"><span>Programa</span><strong>Análisis y Desarrollo de Software (ADSO)</strong></div>
+            <div class="info-item"><span>Ficha</span><strong>3169657</strong></div>
+            <div class="info-item"><span>Competencia · 220501096</span><strong>Desarrollar la solución de software de acuerdo con el diseño y metodologías de desarrollo.</strong></div>
+            <div class="info-item"><span>Resultado de aprendizaje · 220501096-03</span><strong>Crear componentes front-end del software de acuerdo con el diseño.</strong></div>
+          </div>
+        </section>
+        <section class="workspace-panel" id="panel-checklist" hidden>
+          <div class="checklist-heading">
+            <div>
+              <h2 class="workspace-section-title">Checklist de evaluación</h2>
+              <p class="workspace-muted">Fase actual: Home con navegación, login, registro y verificación de cuenta.</p>
+            </div>
+          </div>
+          <div class="checklist-toolbar">
+            <button id="export-checklist" type="button">Exportar CSV</button>
+            <button id="print-checklist" type="button">Imprimir / Guardar PDF</button>
+            <button id="reset-checklist" type="button">Restablecer evaluación</button>
+          </div>
+          <div class="evaluation-summary" aria-live="polite">
+            <div class="summary-item"><strong data-summary="complete">0</strong><span>Fase completa</span></div>
+            <div class="summary-item"><strong data-summary="progress">0</strong><span>En proceso</span></div>
+            <div class="summary-item"><strong data-summary="pending">0</strong><span>Pendiente</span></div>
+            <div class="summary-item"><strong data-summary="average">0%</strong><span>Avance de la fase</span></div>
+          </div>
+          <details class="criteria-guide">
+            <summary>Ver qué se evalúa en cada criterio</summary>
+            <ol id="criteria-details"></ol>
+          </details>
+          <div class="evaluation-wrap">
+            <table class="evaluation-table" aria-label="Evaluación individual de aprendices">
+              <thead><tr id="evaluation-head"></tr></thead>
+              <tbody id="evaluation-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+      <footer class="workspace-footer">SENA · Análisis y Desarrollo de Software · Ficha 3169657</footer>
+
+      <script>
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJIBE8WjUCFAUiYFhFsviejuhLFv7VQ1lcaKBJMp8fz-s4irc4I69_-bxLJlq7g8g/exec";
+        const storageKey = "adso-3169657-flutter-checklist-v3";
+        const workspaceTabs = Array.from(document.querySelectorAll(".workspace-tab"));
+        const syncStatusBadge = document.getElementById("sync-status");
+
+        const apprentices = [
+          { name: "Angela Carvajal", project: "Restaurante Rincón de Adri" },
+          { name: "Yohan Felipe Cabrera", project: "Taller de Mecánica" },
+          { name: "Janier Calapsu", project: "Taller de Mecánica" },
+          { name: "Johan Santiago Oviedo", project: "Empresa de préstamos de dinero" },
+          { name: "Charlie Briyet Trujillo", project: "Papelería Juan José El Agrado" },
+          { name: "Liceth Natalia Cabrera Perdomo", project: "Asadero las Ceibas" },
+          { name: "Danna Valeria Sánchez Hernández", project: "Asadero las Ceibas" },
+          { name: "Yeison Quilindo", project: "Megatech2" },
+          { name: "Jhon Jaider Cerquera", project: "Megatech2" },
+          { name: "Dana Sofia Montoya", project: "S-Inventory" },
+          { name: "Andrés Felipe Landines", project: "S-Inventory" },
+          { name: "Mónica Lizeth Molina", project: "Calzame" },
+          { name: "Evelyn Mel Arrigui", project: "Calzame" },
+          { name: "Eder Ramos", project: "Restaurante" },
+          { name: "Edinson Julián Vargas", project: "Restaurante" },
+          { name: "Manuela Mahecha", project: "Banda Municipal" },
+          { name: "Danny Cediel", project: "Banda Municipal" },
+          { name: "María Camila Sierra", project: "Restaurante de comidas rápidas El Parche" },
+          { name: "Paola Diaz", project: "Restaurante de comidas rápidas El Parche" },
+          { name: "Yonanderson Marroquin", project: "Barberías" },
+          { name: "Hernando Botello", project: "Barberías" },
+          { name: "Juan Carlos Rivera", project: "Insumos agrícolas" },
+          { name: "Juan Esteban Torres", project: "Insumos agrícolas" },
+          { name: "Andrés Felipe Triviño", project: "Educación Física" },
+          { name: "Juan Pablo Macias", project: "Educación Física" },
+          { name: "Xiomara Alvira", project: "Distribuidora Anita Garzón" },
+          { name: "Luisa María Carvajal Ospina", project: "Active Sport Gym" },
+          { name: "David Felipe Fajardo", project: "Serviplántulas" },
+        ].map((apprentice, index) => ({ ...apprentice, id: `aprendiz-${index + 1}` }));
+
+        const criteria = [
+          { id: "home", title: "Home con navegación", detail: "Home con contenido útil; navegación entre secciones, estado activo visible y rutas correctas para avanzar y volver.", active: true },
+          { id: "login", title: "Login", detail: "Pantalla de inicio de sesión con campos, acción para ingresar, validaciones, mensajes de error y estado de carga.", active: true },
+          { id: "register", title: "Registro", detail: "Pantalla de registro con los datos requeridos y confirmación de contraseña.", active: true },
+          { id: "verification", title: "Verificación de cuenta", detail: "Ingreso del código de verificación y opción para reenviarlo.", active: true },
+          { id: "catalog", title: "Catálogo de productos", detail: "Catálogo accesible desde la navegación principal." },
+          { id: "product-cards", title: "Tarjetas de producto", detail: "Tarjetas con nombre, imagen, precio y datos relevantes." },
+          { id: "product-detail", title: "Detalle y cantidad", detail: "Consulta del detalle de un producto y selección de cantidad." },
+          { id: "add-cart", title: "Carrito de compras", detail: "Agregar productos al pedido y modificar cantidades." },
+          { id: "order-summary", title: "Resumen del pedido", detail: "Productos, cantidades, subtotal y total." },
+          { id: "order-validation", title: "Validación del pedido", detail: "Validaciones antes de confirmar y manejo de carrito vacío o datos incompletos." },
+          { id: "order-confirmation", title: "Confirmación del pedido", detail: "Confirmación y visualización del estado o comprobante." },
+          { id: "responsive", title: "Diseño adaptable", detail: "Interfaz revisada en varios tamaños móviles, sin desbordamientos ni elementos cortados." },
+          { id: "consistency", title: "Consistencia visual", detail: "Colores, tipografía y componentes coherentes con el diseño del proyecto." },
+          { id: "delivery", title: "Flutter y evidencias", detail: "Proyecto Flutter organizado y evidencia visual de las pantallas y del flujo completo." },
+        ];
+        const activeCriteria = criteria.filter((criterion) => criterion.active);
+        let savedEvaluations = {};
+
+        try {
+          const storedData = JSON.parse(localStorage.getItem(storageKey) || "{}");
+          savedEvaluations = storedData.evaluations || {};
+        } catch {
+          savedEvaluations = {};
+        }
+
+        function setSyncStatus(state, msg) {
+          if (!syncStatusBadge) return;
+          syncStatusBadge.className = `sync-status ${state}`;
+          syncStatusBadge.textContent = msg;
+        }
+
+        async function syncToGoogleSheets(payload) {
+          setSyncStatus("syncing", "Guardando en Drive...");
+          try {
+            await fetch(GOOGLE_SCRIPT_URL, {
+              method: "POST",
+              mode: "no-cors",
+              headers: { "Content-Type": "text/plain;charset=utf-8" },
+              body: JSON.stringify(payload)
+            });
+            setSyncStatus("saved", "Sincronizado");
+          } catch (err) {
+            console.error("Error sincronizando:", err);
+            setSyncStatus("", "Error al sincronizar");
+          }
+        }
+
+        function addTextCell(row, text) {
+          const cell = document.createElement("td");
+          cell.textContent = text;
+          row.append(cell);
+          return cell;
+        }
+
+        const evaluationHead = document.getElementById("evaluation-head");
+        ["#", "Aprendiz", "Proyecto"].forEach((heading) => {
+          const cell = document.createElement("th");
+          cell.scope = "col";
+          cell.textContent = heading;
+          evaluationHead.append(cell);
+        });
+        criteria.forEach((criterion) => {
+          const cell = document.createElement("th");
+          cell.scope = "col";
+          cell.textContent = criterion.title;
+          cell.title = criterion.detail;
+          evaluationHead.append(cell);
+        });
+        ["Avance", "Estado", "Observaciones"].forEach((heading) => {
+          const cell = document.createElement("th");
+          cell.scope = "col";
+          cell.textContent = heading;
+          evaluationHead.append(cell);
+        });
+
+        const criteriaDetails = document.getElementById("criteria-details");
+        criteria.forEach((criterion) => {
+          const item = document.createElement("li");
+          const title = document.createElement("strong");
+          title.textContent = `${criterion.title}${criterion.active ? " (fase actual)" : " (próxima fase)"}: `;
+          item.append(title, document.createTextNode(criterion.detail));
+          criteriaDetails.append(item);
+        });
+
+        const evaluationBody = document.getElementById("evaluation-body");
+        let notesTimeouts = {};
+
+        apprentices.forEach((apprentice, index) => {
+          const row = document.createElement("tr");
+          row.dataset.apprenticeId = apprentice.id;
+          addTextCell(row, String(index + 1));
+          addTextCell(row, apprentice.name);
+          addTextCell(row, apprentice.project);
+
+          criteria.forEach((criterion) => {
+            const cell = document.createElement("td");
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.dataset.criterion = criterion.id;
+            checkbox.checked = criterion.active && savedEvaluations[apprentice.id]?.criteria?.[criterion.id] === true;
+            checkbox.disabled = !criterion.active;
+            checkbox.title = criterion.active ? criterion.detail : "Disponible en una próxima fase";
+            checkbox.setAttribute("aria-label", `${criterion.title} - ${apprentice.name}`);
+
+            checkbox.addEventListener("change", (e) => {
+              saveEvaluations();
+              syncToGoogleSheets({
+                apprenticeId: apprentice.id,
+                apprenticeName: apprentice.name,
+                project: apprentice.project,
+                criterionId: criterion.id,
+                criterionTitle: criterion.title,
+                checked: e.target.checked,
+                progress: row.querySelector(".row-progress")?.textContent || "0%",
+                status: row.querySelector(".status-badge")?.textContent || "",
+                notes: row.querySelector("textarea")?.value || ""
+              });
+            });
+
+            cell.append(checkbox);
+            row.append(cell);
+          });
+
+          const progressCell = document.createElement("td");
+          progressCell.className = "row-progress";
+          row.append(progressCell);
+          const statusCell = document.createElement("td");
+          const statusBadge = document.createElement("span");
+          statusBadge.className = "status-badge";
+          statusCell.append(statusBadge);
+          row.append(statusCell);
+
+          const notesCell = document.createElement("td");
+          const notes = document.createElement("textarea");
+          notes.placeholder = "Observaciones...";
+          notes.setAttribute("aria-label", `Observaciones - ${apprentice.name}`);
+          notes.value = savedEvaluations[apprentice.id]?.notes || "";
+
+          notes.addEventListener("input", () => {
+            saveEvaluations();
+            clearTimeout(notesTimeouts[apprentice.id]);
+            notesTimeouts[apprentice.id] = setTimeout(() => {
+              syncToGoogleSheets({
+                apprenticeId: apprentice.id,
+                apprenticeName: apprentice.name,
+                project: apprentice.project,
+                criterionTitle: "Observaciones",
+                notes: notes.value,
+                progress: row.querySelector(".row-progress")?.textContent || "0%",
+                status: row.querySelector(".status-badge")?.textContent || ""
+              });
+            }, 1200);
+          });
+
+          notesCell.append(notes);
+          row.append(notesCell);
+          evaluationBody.append(row);
+        });
+
+        function updateEvaluationSummary() {
+          const counts = { complete: 0, progress: 0, pending: 0 };
+          let totalYes = 0;
+          evaluationBody.querySelectorAll("tr").forEach((row) => {
+            const checks = Array.from(row.querySelectorAll('input[type="checkbox"]:not(:disabled)'));
+            const yesCount = checks.filter((checkbox) => checkbox.checked).length;
+            let status = "Pendiente";
+            let statusClass = "";
+            if (yesCount === activeCriteria.length) {
+              status = "Completa";
+              statusClass = "complete";
+              counts.complete += 1;
+            } else if (yesCount > 0) {
+              status = "En proceso";
+              statusClass = "progress";
+              counts.progress += 1;
+            } else {
+              counts.pending += 1;
+            }
+            row.querySelector(".row-progress").textContent = `${Math.round((yesCount / activeCriteria.length) * 100)}%`;
+            const badge = row.querySelector(".status-badge");
+            badge.textContent = status;
+            badge.className = `status-badge ${statusClass}`.trim();
+            totalYes += yesCount;
+          });
+
+          Object.entries(counts).forEach(([key, value]) => {
+            document.querySelector(`[data-summary="${key}"]`).textContent = String(value);
+          });
+          const average = Math.round((totalYes / (apprentices.length * activeCriteria.length)) * 100);
+          document.querySelector('[data-summary="average"]').textContent = `${average}%`;
+        }
+
+        function saveEvaluations() {
+          const evaluations = {};
+          evaluationBody.querySelectorAll("tr").forEach((row) => {
+            evaluations[row.dataset.apprenticeId] = {
+              criteria: Object.fromEntries(
+                Array.from(row.querySelectorAll('input[type="checkbox"]'), (checkbox) => [checkbox.dataset.criterion, checkbox.checked]),
+              ),
+              notes: row.querySelector("textarea").value,
+            };
+          });
+          try {
+            localStorage.setItem(storageKey, JSON.stringify({ evaluations }));
+          } catch {
+            // Manejo silencioso si localStorage no está disponible
+          }
+          updateEvaluationSummary();
+        }
+
+        function showWorkspacePanel(panelId) {
+          workspaceTabs.forEach((tab) => {
+            const isActive = tab.dataset.view === panelId;
+            tab.setAttribute("aria-pressed", String(isActive));
+            document.getElementById(tab.dataset.view).hidden = !isActive;
+          });
+        }
+
+        workspaceTabs.forEach((tab) => {
+          tab.addEventListener("click", () => showWorkspacePanel(tab.dataset.view));
+        });
+        document.getElementById("print-checklist").addEventListener("click", () => window.print());
+        document.getElementById("reset-checklist").addEventListener("click", () => {
+          if (!window.confirm("¿Restablecer todas las respuestas y observaciones?")) return;
+          evaluationBody.querySelectorAll('input[type="checkbox"]:not(:disabled)').forEach((checkbox) => {
+            checkbox.checked = false;
+          });
+          evaluationBody.querySelectorAll("textarea").forEach((notes) => {
+            notes.value = "";
+          });
+          saveEvaluations();
+        });
+        document.getElementById("export-checklist").addEventListener("click", () => {
+          const rows = [["#", "Aprendiz", "Proyecto", ...criteria.map((criterion) => criterion.title), "Avance", "Estado", "Observaciones"]];
+          evaluationBody.querySelectorAll("tr").forEach((row, index) => {
+            rows.push([
+              String(index + 1),
+              apprentices[index].name,
+              apprentices[index].project,
+              ...Array.from(row.querySelectorAll('input[type="checkbox"]'), (checkbox) => checkbox.disabled ? "Desactivado" : checkbox.checked ? "Marcado" : "Pendiente"),
+              row.querySelector(".row-progress").textContent,
+              row.querySelector(".status-badge").textContent,
+              row.querySelector("textarea").value,
+            ]);
+          });
+          const csv = `\ufeff${rows.map((row) => row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(",")).join("\r\n")}`;
+          const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = "Checklist_ADSO_3169657.csv";
+          link.click();
+          URL.revokeObjectURL(url);
+        });
+
+        updateEvaluationSummary();
+      </script>
+    </main>
+  </body>
+</html>
